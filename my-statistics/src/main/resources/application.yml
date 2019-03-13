@@ -1,0 +1,10 @@
+server:
+  port: 8081
+  tomcat:
+    uri-encoding: UTF-8
+
+
+spring:
+  thymeleaf:
+    prefix: classpath:/template/html/
+    mode: LEGACYHTML5

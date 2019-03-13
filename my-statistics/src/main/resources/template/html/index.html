@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>阿里云短信发送量统计</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"/>
+
+</head>
+
+<script type="text/css">
+
+    input {
+        border-radius: 15px;
+    }
+
+</script>
+
+<body style="height: 100%">
+
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+
+<div>用户Cookie:</div><div><textarea aria-hidden="true" id="userCookie" /></div>阿里云登录后获取<br/>
+<span>开始时间: <input class="ipt_cls" type="text" id="startTime" value=""/></span>
+<span>结束时间: <input class="ipt_cls" type="text" id="endTime" value=""/></span><br/>
+
+<div><input id="subButton" type="button" value="请求"/></div>
+<div id="container" style="height: 800px;padding: 2px"></div>
+<div id="smsMsg"></div>
+
+</body>
+
+<script type="text/javascript">
+
+    //初始化时间
+    var date = dateFormate('yyyy-MM-dd hh:mm:ss',new Date());
+    $("#startTime").val(date);
+    $("#endTime").val(date);
+    $("#userCookie").val("login_aliyunid_ticket=");
+
+    //请求
+    $("#subButton").click(function () {
+        var cookie = $("#userCookie").val();
+        if(cookie == ''){
+            alert("输入用户Cookie,引号注意转义");
+            return;
+        }
+
+        var startTimeVal = $("#startTime").val();
+        var endTimeVal = $("#endTime").val();
+        var cookie = $("#userCookie").val();
+        var dateJson = '{"startTime":"'+startTimeVal+'","endTime":"'+endTimeVal+'","cookie":"'+cookie+'"}';
+
+        var url = window.location.protocol + "//" + window.location.host + "/ali/sms/info";
+
+        $.ajax({
+            url: url,
+            type: "post",
+            data: dateJson,
+            beforeSend: function(request) {
+                request.setRequestHeader("Content-Type", "application/json");
+            },
+            success: function (data) {
+                if(data.status != 200){
+                    var msg = data.message;
+                    alert(msg);
+                    return;
+                }
+                var dt = data.data;
+                //组装图表
+                var types = [];
+                var smsDate = [];
+                var infoMsg = [];
+                for(var i=0; i<dt.length; i++){
+                    var dataResult = dt[i];
+
+                    //模板类型
+                    types[i] = dataResult.templateName;
+
+                    var dataList = dataResult.totalSendNumber;
+                    infoMsg[i] = {
+                        name: dataResult.templateName,
+                        type:'line',
+                        stack: '发送总量',
+                        data: dataList
+                    };
+
+                }
+
+                //时间
+                smsDate = dt[0].dateDayStr;
+
+                echartInit(types,smsDate,infoMsg);
+            }
+        })
+    });
+
+    //日期格式转换
+    function dateFormate(fmt,date) {
+        var o = {
+            "M+" : date.getMonth()+1,                 //月份
+            "d+" : date.getDate(),                    //日
+            "h+" : date.getHours(),                   //小时
+            "m+" : date.getMinutes(),                 //分
+            "s+" : date.getSeconds(),                 //秒
+            "q+" : Math.floor((date.getMonth()+3)/3), //季度
+            "S"  : date.getMilliseconds()             //毫秒
+        };
+        if(/(y+)/.test(fmt))
+            fmt=fmt.replace(RegExp.$1, (date.getFullYear()+"").substr(4 - RegExp.$1.length));
+        for(var k in o)
+            if(new RegExp("("+ k +")").test(fmt))
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+        return fmt;
+    }
+
+    function echartInit(types,smsDate,infoMsg){
+
+        var dom = document.getElementById("container");
+        var myChart = echarts.init(dom);
+
+        option = null;
+        option = {
+            title: {
+                text: '折线图堆叠'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: types
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: smsDate
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: infoMsg
+        };
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+    }
+
+</script>
+
+</html>
