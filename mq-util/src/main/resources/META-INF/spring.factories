@@ -1,0 +1,2 @@
+## 启用事务消息
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.my.util.mq.configuration.TransactionMqConfiguration

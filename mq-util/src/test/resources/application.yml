@@ -1,0 +1,19 @@
+server:
+  port: 9090
+  tomcat:
+    uri-encoding: UTF-8
+
+spring:
+  profiles:
+    active: test
+
+aliyun:
+  ons:
+    accessKey:
+    secretKey:
+    transaction:
+      producer:
+        topic: MD_TOPIC_TRANSACTION_LOCAL
+        producer_id: PID_MD_TRANSACTION_LOCAL
+  rocketmq:
+    nameSrvAddr: 192.168.0.130:9876

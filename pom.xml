@@ -9,10 +9,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>my-util-keywordsfilter</module>
-        <module>my-mybatis-generator-core</module>
-        <module>my-security</module>
-        <module>my-statistics</module>
+        <module>sensitive-words-util</module>
+        <module>mybatis-generator-core</module>
+        <module>security-util</module>
+        <module>statistics-util</module>
+        <module>mq-util</module>
     </modules>
 
 
