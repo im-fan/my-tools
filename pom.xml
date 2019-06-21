@@ -14,6 +14,7 @@
         <module>security-util</module>
         <module>statistics-util</module>
         <module>mq-util</module>
+        <module>jwt-util</module>
     </modules>
 
 
