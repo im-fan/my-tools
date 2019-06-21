@@ -15,6 +15,7 @@
         <module>statistics-util</module>
         <module>mq-util</module>
         <module>jwt-util</module>
+        <module>test-util</module>
     </modules>
 
 
