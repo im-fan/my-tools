@@ -8,7 +8,7 @@ public class JwtConstant {
      * jwt
      */
     public static final String JWT_ID = "jwt";
-    public static final String JWT_SECRET = "7786df7fc3a34e26a61c034d5ec8245d";
+    public static final String JWT_SECRET = "aaabbbccc";
 
     //过期时间 356天
     public static final long JWT_REFRESH_TTL = TimeUnit.MILLISECONDS.convert(365, TimeUnit.DAYS);
