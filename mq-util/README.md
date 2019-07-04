@@ -12,12 +12,15 @@ docker logs -f --tail 100 rocketmq
 ### 启动顺序
 ```text
 1.下载安装docker-compose命令
-2.修改docker-compose.yml和rocketmq.md中ip地址
+2.修改docker-compose.yml中ip地址
 3.修改config->broker.conf文件中的ip地址
-3.启动
+4.启动
     1.进入到项目中docker文件夹
     2.docker-compose up -d
-4.localhost:8080访问控制台
+5.localhost:8080访问控制台
+6.运行MqConsumer
+7.执行RocketMq中
+
 ```
 
 ### 停止服务
