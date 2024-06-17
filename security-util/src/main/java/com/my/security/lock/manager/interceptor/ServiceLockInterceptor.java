@@ -1,7 +1,5 @@
 package com.my.security.lock.manager.interceptor;
 
-import com.maidao.commons.exception.BusinessSqlException;
-import com.maidao.commons.model.base.dto.Resp;
 import com.my.security.lock.manager.annotation.Security;
 import com.my.security.lock.manager.model.SecurityConstant;
 import com.my.security.lock.manager.model.TokenDto;

@@ -45,13 +45,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.maidao</groupId>
-            <artifactId>maidao-commons</artifactId>
-            <version>1.0.4-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-
         <!--jwt-->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
